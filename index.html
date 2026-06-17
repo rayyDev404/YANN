@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Graduation Zaaa! ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght=400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe3e8 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(255, 154, 178, 0.2);
+            padding: 35px 25px;
+            text-align: center;
+            border: 2px solid #ffccd5;
+            backdrop-filter: blur(5px);
+            transition: all 0.5s ease;
+        }
+
+        .start-screen h2 {
+            color: #ff6b8b;
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+
+        .start-screen p {
+            color: #7d6e71;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .envelope-icon {
+            font-size: 4rem;
+            animation: float 3s ease-in-out infinite;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .btn-open {
+            background: linear-gradient(135deg, #ff8da1 0%, #ff6b8b 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 107, 139, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-open:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 107, 139, 0.6);
+        }
+
+        .message-screen {
+            display: none;
+            text-align: left;
+            max-height: 450px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .message-screen::-webkit-scrollbar {
+            width: 5px;
+        }
+        .message-screen::-webkit-scrollbar-thumb {
+            background: #ffccd5;
+            border-radius: 10px;
+        }
+
+        .message-header {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .typing-text {
+            color: #4a3f41;
+            font-size: 1rem;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: #ff6b8b;
+            margin-left: 2px;
+            animation: blink 0.8s infinite;
+        }
+
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            z-index: 100;
+            display: none;
+            font-size: 1.2rem;
+            border: 1px solid #ffccd5;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .heart-fall {
+            position: absolute;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-5vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="music-control" id="musicBtn" onclick="toggleMusic()">🎵</div>
+
+    <audio id="bgMusic" src="shape_of_my_heart.mp3" loop></audio>
+
+    <div class="container">
+        <div class="card">
+            <div class="start-screen" id="startScreen">
+                <div class="envelope-icon">✉️🌸</div>
+                <h2>Hai Zazaa :D !! </h2>
+                <p>Klik tombol di bawah ini buat buka yaa ✨</p>
+                <button class="btn-open" onclick="openMessage()">Buka Surat 💌</button>
+            </div>
+
+            <div class="message-screen" id="messageScreen">
+                <div class="message-header">🎓✨💐</div>
+                <div class="typing-text"><span id="textTarget"></span><span class="cursor" id="cursor">|</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const pesan = `happy graduation yeahh zaaa!! 🎉✨
+
+engga tau ini aku telat apa engga ngucapinnya hehee, maaff aku engga bisa dateng ke acara kelulusan kamuu yaa :((
+
+semangat buat kisah baru kedepannya, semangatt juga buatt jenjang selanjutnyaa, semoga hal baik selalu mengiringi jalanmu setiap harinya, semoga semesta senantiasa berpihak padamu, semoga jalanmu untuk mencapai masa depan yang cerah dipermudahkan.. 🌟
+
+proud of everything & i'll always be ur biggest supporter, maaff yaa buat semua salahku, dan makasihh buat semua kebaikanmuu, aku bahagia selama kenal kamuu, meskipun kita baru dekat setelah kamu mau lulus yahh.. 
+
+semoga kita tidak asing yaa, you're my favorite person & i'll always love you..., but sorry if i can't make you feel that.., selamat atas kelulusanmu yaa!! ❤️🎓`;
+
+        let index = 0;
+        const speed = 45; 
+        const textTarget = document.getElementById('textTarget');
+        const musik = document.getElementById('bgMusic');
+
+        function openMessage() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('messageScreen').style.display = 'block';
+            document.getElementById('musicBtn').style.display = 'block'; 
+            
+            // Putar musik
+            musik.play().catch(error => {
+                console.log("Musik butuh interaksi user:", error);
+            });
+            
+            typeWriter();
+            setInterval(createHeart, 300);
+        }
+
+        function typeWriter() {
+            if (index < pesan.length) {
+                textTarget.innerHTML += pesan.charAt(index);
+                index++;
+                const messageScreen = document.getElementById('messageScreen');
+                messageScreen.scrollTop = messageScreen.scrollHeight;
+                setTimeout(typeWriter, speed);
+            } else {
+                document.getElementById('cursor').style.display = 'none';
+            }
+        }
+
+        function toggleMusic() {
+            if (musik.paused) {
+                musik.play();
+                document.getElementById('musicBtn').innerText = "🎵";
+            } else {
+                musik.pause();
+                document.getElementById('musicBtn').innerText = "🔇";
+            }
+        }
+
+        function createHeart() {
+            const colors = ['#ffccd5', '#ffb3c1', '#ff8da1', '#ffe3e8'];
+            const items = ['🌸', '✨', '💖', '🎈'];
+            const heart = document.createElement('div');
+            heart.classList.add('heart-fall');
+            heart.innerText = items[Math.floor(Math.random() * items.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = Math.random() * 15 + 12 + 'px';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
+    </script>
+</body>
+</html>
